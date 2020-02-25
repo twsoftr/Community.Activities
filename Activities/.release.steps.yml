@@ -1,0 +1,13 @@
+parameters:
+  nugetFeed: ''
+  packagesToDeploy: ''
+  packageName: ''
+
+steps:
+- task: NuGetCommand@2
+  displayName: 'NuGet Push Activity ${{ parameters.packageName }}'
+  inputs:
+    command: push
+    packagesToPush: '${{ parameters.packagesToDeploy }}'
+    nuGetFeedType: external
+    publishFeedCredentials: '${{ parameters.nugetFeed }}'
