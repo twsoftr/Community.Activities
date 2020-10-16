@@ -16,7 +16,7 @@ steps:
   inputs:
     scriptType: "inlineScript"
     inlineScript: " $major = 1 \n
-$minor = 0 \n
+$minor = 1 \n
 $now = Get-Date \n
 $y2k = Get-Date -Year 2000 -Month 1 -Day 1 \n
 $build = [int]($now - $y2k).TotalDays \n
