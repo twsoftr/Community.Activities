@@ -1,6 +1,24 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - master
+      - release/*
+      - support/*
+  paths:
+    include:
+      - Activities/Python/*
 
-pr: none
+pr:
+  branches:
+    include:
+      - master
+      - release/*
+      - support/*
+      - feature/*
+  paths:
+    include:
+      - Activities/Python/*
+      - Activities/.pipelines/*
 
 jobs:
   - template: "../.pipelines/jobs/ci.yml"

@@ -18,12 +18,6 @@ steps:
       feedsToUse:         "config"
       nugetConfigPath:    ${{ parameters.NuGetConfigPath }}
       packagesdirectory:  ${{ parameters.packagesDirectory }}
-  # - task: VSBuild@1
-  #   displayName: "Build Solution ${{ depend }}"
-  #   inputs:
-  #     solution:       $(Build.SourcesDirectory)/${{ depend }}
-  #     platform:       ${{ parameters.BuildPlatform }}
-  #     configuration:  ${{ parameters.BuildConfiguration }}
 
 - task: NuGetCommand@2
   displayName: "Restore Nuget packages ${{ parameters.BuildProject }}"
@@ -32,6 +26,7 @@ steps:
     feedsToUse:         "config"
     nugetConfigPath:    ${{ parameters.NuGetConfigPath }}
     packagesdirectory:  ${{ parameters.packagesDirectory }}
+
 - task: VSBuild@1
   displayName: "Build Solution ${{ parameters.BuildProject }}"
   inputs:

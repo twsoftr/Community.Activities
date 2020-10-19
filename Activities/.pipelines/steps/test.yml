@@ -15,6 +15,7 @@ steps:
       feedsToUse:         "config"
       nugetConfigPath:    ${{ parameters.NuGetConfigPath }}
       packagesdirectory:  ${{ parameters.packagesDirectory }}
+      
   - task: VSBuild@1
     displayName: "Build tests ${{ test }}"
     inputs:
