@@ -23,6 +23,26 @@ jobs:
     demands: ${{ parameters.Demands }}
 
   steps:
+  # - powershell: |      
+  #     $callUrl = "https://uipath.visualstudio.com/$(System.TeamProject)/_apis/build/builds/$(Build.BuildId)?api-version=4.1"
+  #     $callUrl
+
+  #     $authorizationHeaderBytes = [System.Text.ASCIIEncoding]::ASCII.GetBytes(("{0}:{1}" -f "", "$(System.AccessToken)"))
+  #     $authorizationHeaderBase64 = [System.Convert]::ToBase64String($authorizationHeaderBytes)
+  #     $callHeaders = @{
+  #       Accept = "application/json";
+  #       Authorization = "Basic $authorizationHeaderBase64";
+  #       "Content-Type" = "application/json";
+  #     } 
+
+  #     $callBody = @{ keepForever = $true; }
+
+  #     $response = Invoke-RestMethod -Uri $callUrl -Method Patch -Headers $callHeaders -Body ($callBody | ConvertTo-Json -Depth 99)    
+  #     if (!$response){ Write-Host "Build retention didn't worked" }
+  #   displayName: "Retain build forever"
+  #   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'))
+  #   continueOnError: true
+
   - template: "../steps/pre_build.yml"
     parameters:
       rootPath:         ${{ parameters.rootPath }}
