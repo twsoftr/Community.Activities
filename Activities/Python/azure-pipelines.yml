@@ -20,7 +20,6 @@ pr:
       - Activities/Python/*
       - Activities/.pipelines/*
 
-      
 jobs:
   - template: "../.pipelines/jobs/ci.yml"
     parameters:
