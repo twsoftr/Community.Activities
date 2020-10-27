@@ -43,6 +43,32 @@ jobs:
   #   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'))
   #   continueOnError: true
 
+  - task: UniversalPackages@0
+    displayName: 'Download BuildRetention tools'
+    inputs:
+      command: 'download'
+      downloadDirectory: '$(Pipeline.Workspace)/toolbox/BuildRetention/'
+      feedsToUse: 'internal'
+      vstsFeed: 'DevOps'
+      vstsFeedPackage: "uipath.devops.tools.buildretention"
+      vstsPackageVersion: "1.0.6-dev.1232711"
+      verbosity: Error
+
+  - task: PowerShell@2
+    displayName: 'update BuildRetention '
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(Pipeline.Workspace)/toolbox/BuildRetention/Update-BuildRetention.ps1'
+      arguments: "
+      -retention \"Forever\" 
+      -buildDefinitionName \"$(Build.DefinitionName)\" 
+      -projectName \"$(System.TeamProject)\" 
+      -authToken \"$(System.AccessToken)\" 
+      -buildId \"$(Build.BuildId)\" "
+     
+      
+
+
   - template: "../steps/pre_build.yml"
     parameters:
       rootPath:         ${{ parameters.rootPath }}
