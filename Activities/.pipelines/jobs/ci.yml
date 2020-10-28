@@ -59,7 +59,7 @@ jobs:
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')))
     inputs:
       targetType: 'filePath'
-      filePath: '$(Pipeline.Workspace)/toolbox/BuildRetention/Update-BuildRetentionToForeve.ps1'
+      filePath: '$(Pipeline.Workspace)/toolbox/BuildRetention/Update-BuildRetentionToForever.ps1'
       arguments: "
       -buildDefinitionName \"$(Build.DefinitionName)\" 
       -projectName \"$(System.TeamProject)\" 
