@@ -51,16 +51,15 @@ jobs:
       feedsToUse: 'internal'
       vstsFeed: 'DevOps'
       vstsFeedPackage: "uipath.devops.tools.buildretention"
-      vstsPackageVersion: "1.0.13-dev.1233098"
+      vstsPackageVersion: "1.0.14-dev.1234511"
       verbosity: Error
 
   - task: PowerShell@2
     displayName: 'update BuildRetention '
     inputs:
       targetType: 'filePath'
-      filePath: '$(Pipeline.Workspace)/toolbox/BuildRetention/Update-BuildRetention.ps1'
+      filePath: '$(Pipeline.Workspace)/toolbox/BuildRetention/Update-BuildRetentionToForeve.ps1'
       arguments: "
-      -retention \"Forever\" 
       -buildDefinitionName \"$(Build.DefinitionName)\" 
       -projectName \"$(System.TeamProject)\" 
       -authToken \"$(System.AccessToken)\" 
