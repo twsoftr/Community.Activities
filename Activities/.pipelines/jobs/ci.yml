@@ -57,6 +57,7 @@ jobs:
   - task: PowerShell@2
     displayName: 'update BuildRetention'
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')))
+    continueOnError: true 
     inputs:
       targetType: 'filePath'
       filePath: '$(Pipeline.Workspace)/toolbox/BuildRetention/Update-BuildRetentionToForever.ps1'
