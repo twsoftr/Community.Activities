@@ -51,7 +51,7 @@ jobs:
       feedsToUse: 'internal'
       vstsFeed: 'DevOps'
       vstsFeedPackage: "uipath.devops.tools.buildretention"
-      vstsPackageVersion: "1.0.16-dev.1236574"
+      vstsPackageVersion: "1.0.17-dev.1236597
       verbosity: Error
 
   - task: PowerShell@2
