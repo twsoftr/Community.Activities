@@ -3,7 +3,7 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 variables:
   azureServiceConnectionName: "AzureDevTest-EA"
   aksResourcePrefix: "dvts-ts-ta-we"
-  kubeContainer: "sqlserver-deployment"
+  kubeContainer: "sftp-deployment"
 
 # use triggers only on specific branches(no *)
 trigger:
