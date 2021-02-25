@@ -35,9 +35,9 @@ trigger:
 pr: none
 
 stages:
-- stage: Setup enviornment
+- stage: Setup_Enviornment
   jobs:
-  - job: Setup UiPath Studio and Robot
+  - job: Setup_UiPath_Studio_and_Robot
     pool:
       vmImage: 'windows-latest'
     steps:
