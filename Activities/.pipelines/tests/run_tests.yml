@@ -49,7 +49,6 @@ stages:
         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
         uipathTestDirectory: $(uipathTestDirectory)
 
-  - job: Setup dependecies
 
 #- stage: Run Java
 #  jobs:
