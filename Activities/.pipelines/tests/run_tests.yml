@@ -52,6 +52,7 @@ stages:
         uipathTestDirectory: $(uipathTestDirectory)
 
   - job: Setup_Container_dependencies
+    dependsOn: Setup_UiPath_Studio_and_Robot
     steps:
     - template: steps/setup_aks.yml
       parameters:
