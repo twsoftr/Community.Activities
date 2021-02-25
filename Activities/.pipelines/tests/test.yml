@@ -1,22 +1,8 @@
-name: $(Date:yyyyMMdd)$(Rev:.r)
 
-variables:
+parameters:
   azureServiceConnectionName: "AzureDevTest-EA"
   aksResourcePrefix: "dvts-ts-ta-we"
   kubeContainer: "sftpserver-deployment"
-
-# use triggers only on specific branches(no *)
-trigger:
-  branches:
-    include:
-      - masters
-      - develop
-  paths:
-    include:
-      - Activities/*
-
-# don't user PR triggers 
-pr: none
 
 jobs:
 - job: Run_Database_Integration_Tests
