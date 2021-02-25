@@ -1,7 +1,4 @@
 parameters:
-  - name: "versions"
-    type: object
-    default: {}
   - name: uipathLicenseCode
     type: string
   - name: uipathVersion
