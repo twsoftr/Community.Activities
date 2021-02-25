@@ -1,0 +1,17 @@
+parameters:
+  - name: azureServiceConnectionName
+    type: string
+  - name: aksResourcePrefix
+    type: string
+  - name: sftpContainer
+    type: string
+  - name: sqlserverContainer
+    type: string
+
+steps:
+  - script: |
+        kubectl delete -f $(Build.SourcesDirectory)/Activities/.pipelines/tests/kube/$(sftpContainer).yml --namespace=$(namespace)
+        kubectl delete -f $(Build.SourcesDirectory)/Activities/.pipelines/tests/kube/$(sqlserverContainer).yml --namespace=$(namespace)
+        kubectl delete namespace $(namespace)
+    displayName: clean - kube delete $(sftpContainer) and $(sqlserverContainer)
+    condition: always()

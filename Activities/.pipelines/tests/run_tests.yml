@@ -8,6 +8,8 @@ variables:
     value: 'dvts-ts-ta-we'
   - name: sftpContainer
     value: 'sftpserver-deployment'
+  - name: sqlserverContainer
+    value: 'sqlserver-deployment'
   - name: uipathLicenseCode
     value: $(LicenseCode)
   - name: uipathVersion
@@ -49,6 +51,14 @@ stages:
         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
         uipathTestDirectory: $(uipathTestDirectory)
 
+  - job: Setup_Container_dependencies
+    steps:
+    - template: steps/setup_aks.yml
+      parameters:
+        azureServiceConnectionName: $(azureServiceConnectionName)
+        aksResourcePrefix: $(aksResourcePrefix)
+        sftpContainer: $(sftpContainer)
+        sqlserverContainer: $(sqlserverContainer)
 
 #- stage: Run Java
 #  jobs:
@@ -69,13 +79,14 @@ stages:
 #  jobs:
 #  - job: B1
 #  - job: B2
-#
-#- stage: Cleanup enviornment
-#  jobs:
-#  - job: B1
-#  - job: B2
-#
-#- stage: Cleanup dependencies
-#  jobs:
-#  - job: B1
-#  - job: B2
+
+- stage: Cleanup
+  jobs:
+   - job: Cleanup_AKS
+     steps:
+     - template: steps/clean_aks.yml
+       parameters:
+        azureServiceConnectionName: $(azureServiceConnectionName)
+        aksResourcePrefix: $(aksResourcePrefix)
+        sftpContainer: $(sftpContainer)
+        sqlserverContainer: $(sqlserverContainer)
