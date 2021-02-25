@@ -1,0 +1,82 @@
+name: Run Integration Tests $(Date:yyyyMMdd)$(Rev:.r)
+
+variables:
+  - group: Secrets
+  - name: azureServiceConnectionName
+    value: 'AzureDevTest-EA'
+  - name: aksResourcePrefix
+    value: 'dvts-ts-ta-we'
+  - name: sftpContainer
+    value: 'sftpserver-deployment'
+  - name: uipathLicenseCode
+    value: $(LicenseCode)
+  - name: uipathVersion
+    value: '20.10.4'
+  - name: studioInstallPath
+    value: 'd:\robot'
+  - name: orchestratorPSModuleSourceUrl
+    value: 'https://www.myget.org/F/uipath-dev/api/v2'
+  - name: uipathTestDirectory
+    value: 'd:\teste'
+
+
+
+# use triggers only on specific branches(no *)
+trigger:
+  branches:
+    include:
+      - masters
+      - develop
+  paths:
+    include:
+      - Activities/*
+
+# don't user PR triggers 
+pr: none
+
+stages:
+- stage: Setup enviornment
+  jobs:
+  - job: Setup UiPath Studio and Robot
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: steps/setup_env.yml
+      parameters:
+        uipathLicenseCode: $(uipathLicenseCode)
+        uipathVersion: $(uipathVersion)
+        studioInstallPath: $(studioInstallPath)
+        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+        uipathTestDirectory: $(uipathTestDirectory)
+
+  - job: Setup dependecies
+
+#- stage: Run Java
+#  jobs:
+#  - job: B1
+#  - job: B2
+#
+#- stage: Run Python
+#  jobs:
+#  - job: A1
+#  - job: A2
+#
+#- stage: Run FTP
+#  jobs:
+#  - job: B1
+#  - job: B2
+#
+#- stage: Run Database
+#  jobs:
+#  - job: B1
+#  - job: B2
+#
+#- stage: Cleanup enviornment
+#  jobs:
+#  - job: B1
+#  - job: B2
+#
+#- stage: Cleanup dependencies
+#  jobs:
+#  - job: B1
+#  - job: B2
