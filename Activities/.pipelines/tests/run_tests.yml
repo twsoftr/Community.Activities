@@ -20,7 +20,10 @@ variables:
     value: 'https://www.myget.org/F/uipath-dev/api/v2'
   - name: uipathTestDirectory
     value: 'd:\teste'
-
+  - name: packagesFolder
+    value: 'd:\teste\Packages'
+  - name: javaBuildPipeline
+    value: '1098'
 
 
 # use triggers only on specific branches(no *)
@@ -51,19 +54,27 @@ stages:
         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
         uipathTestDirectory: $(uipathTestDirectory)
 
-    - template: steps/setup_aks.yml
+    - template: steps/run_java.yml
       parameters:
-        azureServiceConnectionName: $(azureServiceConnectionName)
-        aksResourcePrefix: $(aksResourcePrefix)
-        sftpContainer: $(sftpContainer)
-        sqlserverContainer: $(sqlserverContainer)
+        buildPipeline: $(javaBuildPipeline)
+        packagesFolder: $(packagesFolder)
+        studioInstallPath: $(studioInstallPath)
+        uipathTestDirectory: $(uipathTestDirectory)
 
-    - template: steps/clean_aks.yml
-      parameters:
-        azureServiceConnectionName: $(azureServiceConnectionName)
-        aksResourcePrefix: $(aksResourcePrefix)
-        sftpContainer: $(sftpContainer)
-        sqlserverContainer: $(sqlserverContainer)
+
+#   - template: steps/setup_aks.yml
+#     parameters:
+#       azureServiceConnectionName: $(azureServiceConnectionName)
+#       aksResourcePrefix: $(aksResourcePrefix)
+#       sftpContainer: $(sftpContainer)
+#       sqlserverContainer: $(sqlserverContainer)
+#
+#   - template: steps/clean_aks.yml
+#     parameters:
+#       azureServiceConnectionName: $(azureServiceConnectionName)
+#       aksResourcePrefix: $(aksResourcePrefix)
+#       sftpContainer: $(sftpContainer)
+#       sqlserverContainer: $(sqlserverContainer)
 
 #- stage: Run Java
 #  jobs:
