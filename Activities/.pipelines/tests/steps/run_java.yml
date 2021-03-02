@@ -25,6 +25,7 @@ steps:
       ignoreLASTEXITCODE: true
       script: |
         cd $(packagesFolder)
+        dir $(packagesFolder)
         $file = Get-ChildItem -Path .\ -Filter *.nupkg -Recurse -File -Name -Exclude *symbols*
         $dot = $file.LastIndexof('.')
         $file = $file.Replace(".nupkg","")
