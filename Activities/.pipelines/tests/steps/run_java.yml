@@ -33,16 +33,16 @@ steps:
         Write-Host Update to version $version
         Write-Host "##vso[build.updatebuildnumber]$version"
         cd ${{ parameters.studioInstallPath }}
-        .\UiPath.Studio.CommandLine.exe manage --project-path "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\project.json" --add-ref "UiPath.Java.Activities|$version|strict"
+        .\UiPath.Studio.CommandLine.exe manage --project-path "$(uipathTestDirectory)\JavaConsAndMethods\project.json" --add-ref "UiPath.Java.Activities|$version|strict"
 
    - task: PowerShell@2
      displayName: Run Java Tests VB
      inputs:
       targetType: 'inline'
       script: |
-       ${{ parameters.studioInstallPath }}\uirobot.exe execute --file "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\JavaConsAndMethods.xaml"
-       Copy-Item "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Java.xml"
-       Remove-Item "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\junit*.xml"
+       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\JavaConsAndMethods\JavaConsAndMethods.xaml"
+       Copy-Item "$(uipathTestDirectory)\JavaConsAndMethods\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Java.xml"
+       Remove-Item "$(uipathTestDirectory)\JavaConsAndMethods\junit*.xml"
 
    - task: PublishBuildArtifacts@1
      displayName: "Publish test files as Artifacts"
