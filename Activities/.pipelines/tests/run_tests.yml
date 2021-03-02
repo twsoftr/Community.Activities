@@ -56,7 +56,7 @@ stages:
 
     - template: steps/run_java.yml
       parameters:
-        buildPipeline: $(javaBuildPipeline)
+        buildPipeline: ${{ variables.javaBuildPipeline }}
         packagesFolder: $(packagesFolder)
         studioInstallPath: $(studioInstallPath)
         uipathTestDirectory: $(uipathTestDirectory)
