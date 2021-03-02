@@ -1,6 +1,6 @@
 parameters:
   - name: buildPipeline
-    type: string
+    type: number
   - name: packagesFolder
     type: string
   - name: studioInstallPath

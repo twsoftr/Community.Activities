@@ -23,7 +23,7 @@ variables:
   - name: packagesFolder
     value: 'd:\teste\Packages'
   - name: javaBuildPipeline
-    value: '1098'
+    value: 1098
 
 
 # use triggers only on specific branches(no *)
