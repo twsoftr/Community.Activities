@@ -1,6 +1,6 @@
 parameters:
   - name: buildPipeline
-    type: string
+    type: number
   - name: packagesFolder
     type: string
   - name: studioInstallPath
@@ -14,9 +14,9 @@ steps:
      inputs:
       source: 'specific'
       project: 'Community'
-      pipeline: ${{ parameters.buildPipeline }}
+      pipeline: $(buildPipeline)
       runVersion: 'latest'
-      path: ${{ parameters.packagesFolder }}
+      path: $(packagesFolder)
 
    - task: PowerShell@2
      displayName: Update Nuget Packages from UiPath Dev
@@ -24,7 +24,7 @@ steps:
       targetType: 'inline'
       ignoreLASTEXITCODE: true
       script: |
-        cd ${{ parameters.packagesFolder }}
+        cd d:\teste\Packages\Packages
         $file = Get-ChildItem -Path .\ -Filter *.nupkg -Recurse -File -Name -Exclude *symbols*
         $dot = $file.LastIndexof('.')
         $file = $file.Replace(".nupkg","")
@@ -32,23 +32,25 @@ steps:
         $version = $file.Substring($act+11)
         Write-Host Update to version $version
         Write-Host "##vso[build.updatebuildnumber]$version"
-        cd ${{ parameters.studioInstallPath }}
-        .\UiPath.Studio.CommandLine.exe manage --project-path "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\project.json" --add-ref "UiPath.Java.Activities|$version|strict"
+        cd d:\robot
+        .\UiPath.Studio.CommandLine.exe manage --project-path "d:\teste\Python\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
+        .\UiPath.Studio.CommandLine.exe manage --project-path "d:\teste\PythonMultipleTests\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
 
-   - task: PowerShell@2
-     displayName: Run Java Tests VB
-     inputs:
-      targetType: 'inline'
-      script: |
-       ${{ parameters.studioInstallPath }}\uirobot.exe execute --file "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\JavaConsAndMethods.xaml"
-       Copy-Item "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Java.xml"
-       Remove-Item "{{ parameters.uipathTestDirectory }}\JavaConsAndMethods\junit*.xml"
+   - template: run_python.yml
+     parameters:
+       versions:
+         - "2.7.18"
+         - "3.5.4"
+         - "3.6.8"
+         - "3.7.9"
+         - "3.8.7"
+         - "3.9.1"
 
    - task: PublishBuildArtifacts@1
      displayName: "Publish test files as Artifacts"
      inputs:
        PathtoPublish:  '$(Build.ArtifactStagingDirectory)'
-       ArtifactName:   'Java Integration Tests for $(Build.BuildNumber)'
+       ArtifactName:   'Python_Integration_Tests_for_$(Build.BuildNumber)'
        ArtifactType:   'Container'
 
    - task: PublishTestResults@2
@@ -57,4 +59,4 @@ steps:
         testResultsFormat: 'JUnit'
         testResultsFiles: 'junit*.xml'
         searchFolder: '$(Build.ArtifactStagingDirectory)'
-        testRunTitle: 'Java Integration Tests for $(Build.BuildNumber)'
+        testRunTitle: 'Python Integration Tests for $(Build.BuildNumber)'
