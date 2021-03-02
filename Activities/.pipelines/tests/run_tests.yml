@@ -24,7 +24,8 @@ variables:
     value: 'd:\teste\Packages'
   - name: javaBuildPipeline
     value: 1098
-
+  - name: pythonBuildPipeline
+    value: 1099
 
 # use triggers only on specific branches(no *)
 trigger:
@@ -61,6 +62,26 @@ stages:
         studioInstallPath: $(studioInstallPath)
         uipathTestDirectory: $(uipathTestDirectory)
 
+- stage: Run_Python
+  jobs:
+  - job: Run_Python_Integration_Tests
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: steps/setup_env.yml
+      parameters:
+        uipathLicenseCode: $(uipathLicenseCode)
+        uipathVersion: $(uipathVersion)
+        studioInstallPath: $(studioInstallPath)
+        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+        uipathTestDirectory: $(uipathTestDirectory)
+
+    - template: steps/run_python.yml
+      parameters:
+        buildPipeline: ${{ variables.pythonBuildPipeline }}
+        packagesFolder: $(packagesFolder)
+        studioInstallPath: $(studioInstallPath)
+        uipathTestDirectory: $(uipathTestDirectory)
 
 #   - template: steps/setup_aks.yml
 #     parameters:
@@ -75,24 +96,3 @@ stages:
 #       aksResourcePrefix: $(aksResourcePrefix)
 #       sftpContainer: $(sftpContainer)
 #       sqlserverContainer: $(sqlserverContainer)
-
-#- stage: Run Java
-#  jobs:
-#  - job: B1
-#  - job: B2
-#
-#- stage: Run Python
-#  jobs:
-#  - job: A1
-#  - job: A2
-#
-#- stage: Run FTP
-#  jobs:
-#  - job: B1
-#  - job: B2
-#
-#- stage: Run Database
-#  jobs:
-#  - job: B1
-#  - job: B2
-

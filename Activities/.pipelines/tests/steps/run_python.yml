@@ -1,6 +1,6 @@
 parameters:
   - name: buildPipeline
-    type: number
+    type: string
   - name: packagesFolder
     type: string
   - name: studioInstallPath
@@ -14,9 +14,9 @@ steps:
      inputs:
       source: 'specific'
       project: 'Community'
-      pipeline: $(buildPipeline)
+      pipeline: ${{ parameters.buildPipeline }}
       runVersion: 'latest'
-      path: $(packagesFolder)
+      path: ${{ parameters.packagesFolder }}
 
    - task: PowerShell@2
      displayName: Update Nuget Packages from UiPath Dev
@@ -24,7 +24,7 @@ steps:
       targetType: 'inline'
       ignoreLASTEXITCODE: true
       script: |
-        cd d:\teste\Packages\Packages
+        cd ${{ parameters.packagesFolder }}
         $file = Get-ChildItem -Path .\ -Filter *.nupkg -Recurse -File -Name -Exclude *symbols*
         $dot = $file.LastIndexof('.')
         $file = $file.Replace(".nupkg","")
@@ -32,11 +32,11 @@ steps:
         $version = $file.Substring($act+11)
         Write-Host Update to version $version
         Write-Host "##vso[build.updatebuildnumber]$version"
-        cd d:\robot
-        .\UiPath.Studio.CommandLine.exe manage --project-path "d:\teste\Python\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
-        .\UiPath.Studio.CommandLine.exe manage --project-path "d:\teste\PythonMultipleTests\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
+        cd ${{ parameters.studioInstallPath }}
+        .\UiPath.Studio.CommandLine.exe manage --project-path "$(uipathTestDirectory)\Python\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
+        .\UiPath.Studio.CommandLine.exe manage --project-path "$(uipathTestDirectory)\PythonMultipleTests\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
 
-   - template: run_python.yml
+   - template: run_python2.yml
      parameters:
        versions:
          - "2.7.18"
