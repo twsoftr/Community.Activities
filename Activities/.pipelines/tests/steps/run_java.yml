@@ -14,7 +14,7 @@ steps:
      inputs:
       source: 'specific'
       project: 'Community'
-      pipeline: $(buildPipeline)
+      pipeline: ${{ parameters.buildPipeline }}
       runVersion: 'latest'
       path: $(packagesFolder)
 

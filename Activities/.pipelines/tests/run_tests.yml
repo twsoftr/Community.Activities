@@ -42,7 +42,7 @@ pr: none
 stages:
 - stage: Run_Java
   jobs:
-  - job: Setup_UiPath_Studio_and_Robot
+  - job: Run_Java_Integration_Tests
     pool:
       vmImage: 'windows-latest'
     steps:
