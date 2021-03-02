@@ -16,7 +16,16 @@ steps:
       project: 'Community'
       pipeline: ${{ parameters.buildPipeline }}
       runVersion: 'latest'
-      path: $(packagesFolder)
+      path: ${{ parameters.packagesFolder }}
+
+   - task: PowerShell@2
+     displayName: Run dir command
+     inputs:
+      targetType: 'inline'
+      ignoreLASTEXITCODE: true
+      script: |
+        cd ${{ parameters.packagesFolder }}
+        dir ${{ parameters.packagesFolder }}
 
    - task: PowerShell@2
      displayName: Update Nuget Packages from UiPath Dev
@@ -24,8 +33,7 @@ steps:
       targetType: 'inline'
       ignoreLASTEXITCODE: true
       script: |
-        cd $(packagesFolder)
-        dir $(packagesFolder)
+        cd ${{ parameters.packagesFolder }}
         $file = Get-ChildItem -Path .\ -Filter *.nupkg -Recurse -File -Name -Exclude *symbols*
         $dot = $file.LastIndexof('.')
         $file = $file.Replace(".nupkg","")
@@ -33,8 +41,8 @@ steps:
         $version = $file.Substring($act+11)
         Write-Host Update to version $version
         Write-Host "##vso[build.updatebuildnumber]$version"
-        cd $(studioInstallPath)
-        .\UiPath.Studio.CommandLine.exe manage --project-path "$(uipathTestDirectory)\JavaConsAndMethods\project.json" --add-ref "UiPath.Java.Activities|$version|strict"
+        cd ${{ parameters.studioInstallPath }}
+        .\UiPath.Studio.CommandLine.exe manage --project-path "${{ parameters.uipathTestDirectory }}\JavaConsAndMethods\project.json" --add-ref "UiPath.Java.Activities|$version|strict"
    
    - task: PowerShell@2
      displayName: Run Java Tests VB
