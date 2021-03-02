@@ -1,6 +1,6 @@
 parameters:
   - name: buildPipeline
-    type: number
+    type: string
   - name: packagesFolder
     type: string
   - name: studioInstallPath
@@ -14,18 +14,9 @@ steps:
      inputs:
       source: 'specific'
       project: 'Community'
-      pipeline: ${{ parameters.buildPipeline }}
+      pipeline: $(buildPipeline)
       runVersion: 'latest'
-      path: ${{ parameters.packagesFolder }}
-
-   - task: PowerShell@2
-     displayName: Run dir command
-     inputs:
-      targetType: 'inline'
-      ignoreLASTEXITCODE: true
-      script: |
-        cd ${{ parameters.packagesFolder }}
-        dir ${{ parameters.packagesFolder }}
+      path: $(packagesFolder)
 
    - task: PowerShell@2
      displayName: Update Nuget Packages from UiPath Dev
@@ -33,7 +24,7 @@ steps:
       targetType: 'inline'
       ignoreLASTEXITCODE: true
       script: |
-        cd ${{ parameters.packagesFolder }}
+        cd d:\teste\Packages
         $file = Get-ChildItem -Path .\ -Filter *.nupkg -Recurse -File -Name -Exclude *symbols*
         $dot = $file.LastIndexof('.')
         $file = $file.Replace(".nupkg","")
@@ -41,18 +32,17 @@ steps:
         $version = $file.Substring($act+11)
         Write-Host Update to version $version
         Write-Host "##vso[build.updatebuildnumber]$version"
-        cd ${{ parameters.studioInstallPath }}
-        .\UiPath.Studio.CommandLine.exe manage --project-path "${{ parameters.uipathTestDirectory }}\JavaConsAndMethods\project.json" --add-ref "UiPath.Java.Activities|$version|strict"
-   
+        cd d:\robot
+        .\UiPath.Studio.CommandLine.exe manage --project-path "d:\teste\JavaConsAndMethods\project.json" --add-ref "UiPath.Java.Activities|$version|strict"
+
    - task: PowerShell@2
      displayName: Run Java Tests VB
      inputs:
       targetType: 'inline'
       script: |
-       cd $(studioInstallPath)
-       .\uirobot.exe execute --file "$(uipathTestDirectory)\JavaConsAndMethods\JavaConsAndMethods.xaml"
-       Copy-Item "$(uipathTestDirectory)\JavaConsAndMethods\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Java.xml"
-       Remove-Item "$(uipathTestDirectory)\JavaConsAndMethods\junit*.xml"
+       d:\robot\uirobot.exe execute --file "d:\teste\JavaConsAndMethods\JavaConsAndMethods.xaml"
+       Copy-Item "d:\teste\JavaConsAndMethods\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Java.xml"
+       Remove-Item "d:\teste\JavaConsAndMethods\junit*.xml"
 
    - task: PublishBuildArtifacts@1
      displayName: "Publish test files as Artifacts"
