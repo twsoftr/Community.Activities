@@ -19,7 +19,7 @@ steps:
       addSpnToEnvironment: true
       inlineScript: |
        $ip=Invoke-RestMethod http://ipinfo.io/json | Select -exp ip
-       $ip = $ip+"\23"
+       $ip = $ip+"/23"
        write-host $ip
        az aks update -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks --api-server-authorized-ip-ranges  $ip
 
