@@ -33,25 +33,22 @@ steps:
         Write-Host Update to version $version
         Write-Host "##vso[build.updatebuildnumber]$version"
         cd ${{ parameters.studioInstallPath }}
-        .\UiPath.Studio.CommandLine.exe manage --project-path "$(uipathTestDirectory)\Python\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
-        .\UiPath.Studio.CommandLine.exe manage --project-path "$(uipathTestDirectory)\PythonMultipleTests\project.json" --add-ref "UiPath.Python.Activities|$version|strict"
+        .\UiPath.Studio.CommandLine.exe manage --project-path "$(uipathTestDirectory)\DatabaseTests\project.json" --add-ref "UiPath.Database.Activities|$version|strict"
 
-   - template: run_python2.yml
-     parameters:
-       versions:
-         - "2.7.18"
-         - "3.5.4"
-         - "3.6.8"
-         - "3.7.9"
-         - "3.8.7"
-         - "3.9.1"
-       uipathTestDirectory: $(uipathTestDirectory)
+   - task: PowerShell@2
+     displayName: Run SQL Server Tests VB
+     inputs:
+      targetType: 'inline'
+      script: |
+       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsSQLS.xaml" --input "{ 'SQLServer_Connection' : $(SQLServer_Connection), 'SQLServer_TESTDATABASE' : $(SQLServer_TESTDATABASE), 'SQLServer_db_provider' : $(SQLServer_db_provider) }"
+       Copy-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Database_SQLSrv.xml"
+       Remove-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml"
 
    - task: PublishBuildArtifacts@1
      displayName: "Publish test files as Artifacts"
      inputs:
        PathtoPublish:  '$(Build.ArtifactStagingDirectory)'
-       ArtifactName:   'Python_Integration_Tests_for_$(Build.BuildNumber)'
+       ArtifactName:   'SQL Server Integration Tests for $(Build.BuildNumber)'
        ArtifactType:   'Container'
 
    - task: PublishTestResults@2
@@ -60,4 +57,4 @@ steps:
         testResultsFormat: 'JUnit'
         testResultsFiles: 'junit*.xml'
         searchFolder: '$(Build.ArtifactStagingDirectory)'
-        testRunTitle: 'Python Integration Tests for $(Build.BuildNumber)'
+        testRunTitle: 'SQL Server Integration Tests for $(Build.BuildNumber)'

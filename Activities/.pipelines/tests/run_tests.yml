@@ -41,9 +41,51 @@ trigger:
 pr: none
 
 stages:
-- stage: Run_Java
+#- stage: Run_Java
+#  jobs:
+#  - job: Run_Java_Integration_Tests
+#    pool:
+#      vmImage: 'windows-latest'
+#    steps:
+#    - template: steps/setup_env.yml
+#      parameters:
+#        uipathLicenseCode: $(uipathLicenseCode)
+#        uipathVersion: $(uipathVersion)
+#        studioInstallPath: $(studioInstallPath)
+#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+#        uipathTestDirectory: $(uipathTestDirectory)
+#
+#    - template: steps/run_java.yml
+#      parameters:
+#        buildPipeline: ${{ variables.javaBuildPipeline }}
+#        packagesFolder: $(packagesFolder)
+#        studioInstallPath: $(studioInstallPath)
+#        uipathTestDirectory: $(uipathTestDirectory)
+#
+#- stage: Run_Python
+#  jobs:
+#  - job: Run_Python_Integration_Tests
+#    pool:
+#      vmImage: 'windows-latest'
+#    steps:
+#    - template: steps/setup_env.yml
+#      parameters:
+#        uipathLicenseCode: $(uipathLicenseCode)
+#        uipathVersion: $(uipathVersion)
+#        studioInstallPath: $(studioInstallPath)
+#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+#        uipathTestDirectory: $(uipathTestDirectory)
+#
+#    - template: steps/run_python.yml
+#      parameters:
+#        buildPipeline: ${{ variables.pythonBuildPipeline }}
+#        packagesFolder: $(packagesFolder)
+#        studioInstallPath: $(studioInstallPath)
+#        uipathTestDirectory: $(uipathTestDirectory)
+#
+- stage: Run_SQL_Server
   jobs:
-  - job: Run_Java_Integration_Tests
+  - job: Run_SQL_Server_Integration_Tests
     pool:
       vmImage: 'windows-latest'
     steps:
@@ -55,26 +97,12 @@ stages:
         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
         uipathTestDirectory: $(uipathTestDirectory)
 
-    - template: steps/run_java.yml
+    - template: steps/setup_aks.yml
       parameters:
-        buildPipeline: ${{ variables.javaBuildPipeline }}
-        packagesFolder: $(packagesFolder)
-        studioInstallPath: $(studioInstallPath)
-        uipathTestDirectory: $(uipathTestDirectory)
-
-- stage: Run_Python
-  jobs:
-  - job: Run_Python_Integration_Tests
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - template: steps/setup_env.yml
-      parameters:
-        uipathLicenseCode: $(uipathLicenseCode)
-        uipathVersion: $(uipathVersion)
-        studioInstallPath: $(studioInstallPath)
-        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
-        uipathTestDirectory: $(uipathTestDirectory)
+        azureServiceConnectionName: $(azureServiceConnectionName)
+        aksResourcePrefix: $(aksResourcePrefix)
+        sftpContainer: $(sftpContainer)
+        sqlserverContainer: $(sqlserverContainer)
 
     - template: steps/run_python.yml
       parameters:
@@ -82,17 +110,10 @@ stages:
         packagesFolder: $(packagesFolder)
         studioInstallPath: $(studioInstallPath)
         uipathTestDirectory: $(uipathTestDirectory)
-
-#   - template: steps/setup_aks.yml
-#     parameters:
-#       azureServiceConnectionName: $(azureServiceConnectionName)
-#       aksResourcePrefix: $(aksResourcePrefix)
-#       sftpContainer: $(sftpContainer)
-#       sqlserverContainer: $(sqlserverContainer)
-#
-#   - template: steps/clean_aks.yml
-#     parameters:
-#       azureServiceConnectionName: $(azureServiceConnectionName)
-#       aksResourcePrefix: $(aksResourcePrefix)
-#       sftpContainer: $(sftpContainer)
-#       sqlserverContainer: $(sqlserverContainer)
+ 
+    - template: steps/clean_aks.yml
+      parameters:
+        azureServiceConnectionName: $(azureServiceConnectionName)
+        aksResourcePrefix: $(aksResourcePrefix)
+        sftpContainer: $(sftpContainer)
+        sqlserverContainer: $(sqlserverContainer)
