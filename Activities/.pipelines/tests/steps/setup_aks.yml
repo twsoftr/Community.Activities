@@ -9,19 +9,6 @@ parameters:
     type: string
 
 steps:
-  - task: AzureCLI@2
-    displayName: Setup the API server authorized IP ranges
-    name: k8s_api_access
-    inputs:
-      azureSubscription: $(azureServiceConnectionName)
-      scriptType: pscore
-      scriptLocation: inlineScript
-      addSpnToEnvironment: true
-      inlineScript: |
-       $ip=Invoke-RestMethod http://ipinfo.io/json | Select -exp ip
-       $ip = $ip+"/23"
-       write-host $ip
-       az aks update -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks --api-server-authorized-ip-ranges  $ip
 
   - task: AzureCLI@2
     displayName: Setup the K8S credentials
@@ -33,8 +20,6 @@ steps:
       addSpnToEnvironment: true
       inlineScript: |
         az aks get-credentials -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks
-
-  
 
   - task: PowerShell@2
     displayName: generate uniq namespace
