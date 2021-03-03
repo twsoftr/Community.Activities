@@ -29,6 +29,8 @@ steps:
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |
+       $ip=Invoke-RestMethod http://ipinfo.io/json | Select -exp ip
+       write-host $ip
        az aks update -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks --api-server-authorized-ip-ranges  40.74.28.0/23
 
   - task: PowerShell@2
