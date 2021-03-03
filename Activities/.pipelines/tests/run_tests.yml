@@ -29,7 +29,7 @@ variables:
   - name: databaseBuildPipeline
     value: 1094
   - name: SQLServer_Connection
-    value: "Data Source=$($env:sqlPublicIP);User ID=sa;Password=sa12345"
+    value: "Data Source=$($env:sqlPublicIP)%3BUser ID=sa%3BPassword=sa12345"
   - name: SQLServer_db_provider
     value: 'System.Data.SqlClient'
 
