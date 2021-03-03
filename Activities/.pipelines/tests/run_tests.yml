@@ -31,7 +31,7 @@ variables:
   - name: SQLServer_Connection
     value: "'Data Source=$($env:sqlPublicIP);User ID=sa;Password=sa12345'"
   - name: SQLServer_db_provider
-    value: 'System.Data.SqlClient'
+    value: "'System.Data.SqlClient'"
 
 # use triggers only on specific branches(no *)
 trigger:
