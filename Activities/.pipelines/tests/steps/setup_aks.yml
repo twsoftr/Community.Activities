@@ -22,7 +22,7 @@ steps:
 
   - task: AzureCLI@2
     displayName: Setup the API server authorized IP ranges
-    name: k8s_credentials
+    name: k8s_api_access
     inputs:
       azureSubscription: $(azureServiceConnectionName)
       scriptType: pscore
