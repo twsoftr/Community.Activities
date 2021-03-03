@@ -44,6 +44,7 @@ steps:
      inputs:
       targetType: 'inline'
       script: |
+       Write-Host SQL Connection $(SQLServer_Connection)
        $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsSQLS.xaml" --input "{ 'SQLServer_Connection' : $(SQLServer_Connection), 'SQLServer_db_provider' : $(SQLServer_db_provider) }"
        Copy-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Database_SQLSrv.xml"
        Remove-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml"
