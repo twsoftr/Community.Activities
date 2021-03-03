@@ -7,6 +7,10 @@ parameters:
     type: string
   - name: uipathTestDirectory
     type: string
+  - name: SQLServer_Connection
+    type: string
+  - name: SQLServer_db_provider
+    type: string
 
 steps:
    - task: DownloadPipelineArtifact@2
@@ -40,7 +44,7 @@ steps:
      inputs:
       targetType: 'inline'
       script: |
-       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsSQLS.xaml" --input "{ 'SQLServer_Connection' : $(SQLServer_Connection), 'SQLServer_TESTDATABASE' : $(SQLServer_TESTDATABASE), 'SQLServer_db_provider' : $(SQLServer_db_provider) }"
+       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsSQLS.xaml" --input "{ 'SQLServer_Connection' : $(SQLServer_Connection), 'SQLServer_db_provider' : $(SQLServer_db_provider) }"
        Copy-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Database_SQLSrv.xml"
        Remove-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml"
 

@@ -28,6 +28,10 @@ variables:
     value: 1099
   - name: databaseBuildPipeline
     value: 1094
+  - name: SQLServer_Connection
+    value: string
+  - name: SQLServer_db_provider
+    value: 'System.Data.SqlClient'
 
 # use triggers only on specific branches(no *)
 trigger:
@@ -112,6 +116,8 @@ stages:
         packagesFolder: $(packagesFolder)
         studioInstallPath: $(studioInstallPath)
         uipathTestDirectory: $(uipathTestDirectory)
+        SQLServer_Connection: 'Data Source=$(sqlPublicIP);User ID=sa;Password=sa12345#'
+        SQLServer_db_provider: $(SQLServer_db_provider)
  
     - template: steps/clean_aks.yml
       parameters:
