@@ -116,7 +116,7 @@ stages:
         packagesFolder: $(packagesFolder)
         studioInstallPath: $(studioInstallPath)
         uipathTestDirectory: $(uipathTestDirectory)
-        SQLServer_Connection: 'Data Source=$(sqlPublicIP);User ID=sa;Password=sa12345#'
+        SQLServer_Connection: 'Data Source=$(sqlPublicIP);User ID=sa;Password=sa12345'
         SQLServer_db_provider: $(SQLServer_db_provider)
  
     - template: steps/clean_aks.yml
