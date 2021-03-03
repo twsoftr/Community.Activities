@@ -20,6 +20,19 @@ steps:
       inlineScript: |
         az aks get-credentials -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks
 
+  - task: AzureCLI@2
+    displayName: Setup the API server authorized IP ranges
+    name: k8s_credentials
+    inputs:
+      azureSubscription: $(azureServiceConnectionName)
+      scriptType: pscore
+      scriptLocation: inlineScript
+      addSpnToEnvironment: true
+      inlineScript: |
+        # Retrieve your IP address
+        CURRENT_IP=$(dig @resolver1.opendns.com ANY myip.opendns.com +short)
+        az aks update -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks --api-server-authorized-ip-ranges  $CURRENT_IP/32
+
   - task: PowerShell@2
     displayName: generate uniq namespace
     inputs:
