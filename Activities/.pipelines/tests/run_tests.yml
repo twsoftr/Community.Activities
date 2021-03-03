@@ -26,6 +26,8 @@ variables:
     value: 1098
   - name: pythonBuildPipeline
     value: 1099
+  - name: databaseBuildPipeline
+    value: 1094
 
 # use triggers only on specific branches(no *)
 trigger:
@@ -104,9 +106,9 @@ stages:
         sftpContainer: $(sftpContainer)
         sqlserverContainer: $(sqlserverContainer)
 
-    - template: steps/run_python.yml
+    - template: steps/run_sql.yml
       parameters:
-        buildPipeline: ${{ variables.pythonBuildPipeline }}
+        buildPipeline: ${{ variables.databaseBuildPipeline }}
         packagesFolder: $(packagesFolder)
         studioInstallPath: $(studioInstallPath)
         uipathTestDirectory: $(uipathTestDirectory)
