@@ -31,7 +31,7 @@ steps:
       inlineScript: |
        $ip=Invoke-RestMethod http://ipinfo.io/json | Select -exp ip
        write-host $ip
-       az aks update -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks --api-server-authorized-ip-ranges  $ip/23
+       az aks update -g $(aksResourcePrefix)-rg -n $(aksResourcePrefix)-aks --api-server-authorized-ip-ranges  $ip
 
   - task: PowerShell@2
     displayName: generate uniq namespace
