@@ -29,7 +29,7 @@ variables:
   - name: databaseBuildPipeline
     value: 1094
   - name: SQLServer_Connection
-    value: string
+    value: 'Data Source=${{ variables.sqlPublicIP }};User ID=sa;Password=sa12345'
   - name: SQLServer_db_provider
     value: 'System.Data.SqlClient'
 
@@ -116,7 +116,7 @@ stages:
         packagesFolder: $(packagesFolder)
         studioInstallPath: $(studioInstallPath)
         uipathTestDirectory: $(uipathTestDirectory)
-        SQLServer_Connection: 'Data Source=${{ variables.sqlPublicIP }};User ID=sa;Password=sa12345'
+        SQLServer_Connection: $(SQLServer_Connection)
         SQLServer_db_provider: $(SQLServer_db_provider)
  
     - template: steps/clean_aks.yml
