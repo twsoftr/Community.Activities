@@ -119,9 +119,9 @@ stages:
         SQLServer_Connection: $(SQLServer_Connection)
         SQLServer_db_provider: $(SQLServer_db_provider)
  
-    - template: steps/clean_aks.yml
-      parameters:
-        azureServiceConnectionName: $(azureServiceConnectionName)
-        aksResourcePrefix: $(aksResourcePrefix)
-        sftpContainer: $(sftpContainer)
-        sqlserverContainer: $(sqlserverContainer)
+#    - template: steps/clean_aks.yml
+#      parameters:
+#        azureServiceConnectionName: $(azureServiceConnectionName)
+#        aksResourcePrefix: $(aksResourcePrefix)
+#        sftpContainer: $(sftpContainer)
+#        sqlserverContainer: $(sqlserverContainer)
