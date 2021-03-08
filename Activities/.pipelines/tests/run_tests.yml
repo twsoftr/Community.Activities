@@ -154,10 +154,10 @@ stages:
 
 
  
-    - template: steps/clean_aks.yml
-      parameters:
-        azureServiceConnectionName: $(azureServiceConnectionName)
-        aksResourcePrefix: $(aksResourcePrefix)
-        sftpContainer: $(sftpContainer)
-        sqlserverContainer: $(sqlserverContainer)
-        deploySftpContainer: true
+#   - template: steps/clean_aks.yml
+#     parameters:
+#       azureServiceConnectionName: $(azureServiceConnectionName)
+#       aksResourcePrefix: $(aksResourcePrefix)
+#       sftpContainer: $(sftpContainer)
+#       sqlserverContainer: $(sqlserverContainer)
+#       deploySftpContainer: true
