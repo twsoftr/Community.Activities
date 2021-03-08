@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: sftpserver
-        image: vladnicula24s/sftpgo:alpine
+        image: communityactivitiesacr.azurecr.io/sftpgo:latest
         imagePullPolicy: Always
         resources:
             requests:

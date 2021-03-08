@@ -7,11 +7,25 @@ parameters:
     type: string
   - name: sqlserverContainer
     type: string
+  - name: deploySftpContainer
+    type: boolean
+    default: false
+  - name: deploySqlserverContainer
+    type: boolean
+    default: false
 
 steps:
+  - ${{ if eq(parameters.deploySftpContainer, true) }}:  
+    - script: |
+          kubectl delete -f $(Build.SourcesDirectory)/Activities/.pipelines/tests/kube/$(sftpContainer).yml --namespace=$(namespace)
+      displayName: clean - kube delete $(sftpContainer)
+
+  - ${{ if eq(parameters.deploySqlserverContainer, true) }}:  
+    - script: |
+          kubectl delete -f $(Build.SourcesDirectory)/Activities/.pipelines/tests/kube/$(sqlserverContainer).yml --namespace=$(namespace)
+      displayName: clean - kube delete $(sqlserverContainer)
+
   - script: |
-        kubectl delete -f $(Build.SourcesDirectory)/Activities/.pipelines/tests/kube/$(sftpContainer).yml --namespace=$(namespace)
-        kubectl delete -f $(Build.SourcesDirectory)/Activities/.pipelines/tests/kube/$(sqlserverContainer).yml --namespace=$(namespace)
         kubectl delete namespace $(namespace)
-    displayName: clean - kube delete $(sftpContainer) and $(sqlserverContainer)
+    displayName: clean - kube delete $(namespace)
     condition: always()
