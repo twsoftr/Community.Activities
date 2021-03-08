@@ -90,9 +90,49 @@ stages:
 #        uipathTestDirectory: $(uipathTestDirectory)
 
 
-- stage: Run_SQL_Server
+#- stage: Run_SQL_Server
+#  jobs:
+#  - job: Run_SQL_Server_Integration_Tests
+#    pool:
+#      vmImage: 'windows-latest'
+#    steps:
+#    - template: steps/setup_env.yml
+#      parameters:
+#        uipathLicenseCode: $(uipathLicenseCode)
+#        uipathVersion: $(uipathVersion)
+#        studioInstallPath: $(studioInstallPath)
+#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+#        uipathTestDirectory: $(uipathTestDirectory)
+#
+#    - template: steps/setup_aks.yml
+#      parameters:
+#        azureServiceConnectionName: $(azureServiceConnectionName)
+#        aksResourcePrefix: $(aksResourcePrefix)
+#        sftpContainer: $(sftpContainer)
+#        sqlserverContainer: $(sqlserverContainer)
+#        deploySqlserverContainer: true
+#
+#    - template: steps/run_sql.yml
+#      parameters:
+#        buildPipeline: ${{ variables.databaseBuildPipeline }}
+#        packagesFolder: $(packagesFolder)
+#        studioInstallPath: $(studioInstallPath)
+#        uipathTestDirectory: $(uipathTestDirectory)
+#        SQLServer_Connection: $(SQLServer_Connection)
+#        SQLServer_db_provider: $(SQLServer_db_provider)
+# 
+#    - template: steps/clean_aks.yml
+#      parameters:
+#        azureServiceConnectionName: $(azureServiceConnectionName)
+#        aksResourcePrefix: $(aksResourcePrefix)
+#        sftpContainer: $(sftpContainer)
+#        sqlserverContainer: $(sqlserverContainer)
+#        deploySqlserverContainer: true
+
+
+- stage: Run_SFTP_Server
   jobs:
-  - job: Run_SQL_Server_Integration_Tests
+  - job: Run_SFTP_Server_Integration_Tests
     pool:
       vmImage: 'windows-latest'
     steps:
@@ -110,16 +150,9 @@ stages:
         aksResourcePrefix: $(aksResourcePrefix)
         sftpContainer: $(sftpContainer)
         sqlserverContainer: $(sqlserverContainer)
-        deploySqlserverContainer: true
+        deploySftpContainer: true
 
-    - template: steps/run_sql.yml
-      parameters:
-        buildPipeline: ${{ variables.databaseBuildPipeline }}
-        packagesFolder: $(packagesFolder)
-        studioInstallPath: $(studioInstallPath)
-        uipathTestDirectory: $(uipathTestDirectory)
-        SQLServer_Connection: $(SQLServer_Connection)
-        SQLServer_db_provider: $(SQLServer_db_provider)
+
  
     - template: steps/clean_aks.yml
       parameters:
@@ -127,4 +160,4 @@ stages:
         aksResourcePrefix: $(aksResourcePrefix)
         sftpContainer: $(sftpContainer)
         sqlserverContainer: $(sqlserverContainer)
-        deploySqlserverContainer: true
+        deploySftpContainer: true
