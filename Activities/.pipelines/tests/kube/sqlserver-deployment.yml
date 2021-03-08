@@ -28,7 +28,7 @@ spec:
           - containerPort: 1433
         env:
           - name: MSSQL_SA_PASSWORD
-            value: "sa12345sql"
+            value: "b2298905Acfa%"
           - name: ACCEPT_EULA
             value: "Y"
 ---

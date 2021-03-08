@@ -46,7 +46,7 @@ steps:
       script: |
        Write-Host (Invoke-WebRequest -uri "http://ifconfig.me/ip").Content
        Write-Host $env:sqlPublicIP
-       $datas = "'Data Source=" + $env:sqlPublicIP + ";User ID=sa;Password=sa12345'"
+       $datas = "'Data Source=" + $env:sqlPublicIP + ";User ID=sa;Password=b2298905Acfa%'"
        Write-Host $datas
        Write-Host $(SQLServer_Connection)
        Write-Host $(SQLServer_db_provider)
