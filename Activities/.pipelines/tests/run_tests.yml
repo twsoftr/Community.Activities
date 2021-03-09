@@ -52,6 +52,7 @@ pr: none
 
 stages:
  - stage: Run_Java
+   dependsOn: [] 
    jobs:
    - job: Run_Java_Integration_Tests
      pool:
@@ -73,6 +74,7 @@ stages:
          uipathTestDirectory: $(uipathTestDirectory)
  
  - stage: Run_Python
+   dependsOn: [] 
    jobs:
    - job: Run_Python_Integration_Tests
      pool:
@@ -95,6 +97,7 @@ stages:
  
  
  - stage: Run_SQL_Server
+   dependsOn: [] 
    jobs:
    - job: Run_SQL_Server_Integration_Tests
      pool:
@@ -134,6 +137,7 @@ stages:
 
 
  - stage: Run_SFTP_Server
+   dependsOn: [] 
    jobs:
    - job: Run_SFTP_Server_Integration_Tests
      pool:
@@ -171,6 +175,7 @@ stages:
          deploySftpContainer: true
 
  - stage: Run_Credentials
+   dependsOn: [] 
    jobs:
    - job: Run_Credentials_Integration_Tests
      pool:
@@ -193,6 +198,7 @@ stages:
 
 
  - stage: Run_Cryptography
+   dependsOn: [] 
    jobs:
    - job: Run_Cryptography_Integration_Tests
      pool:
