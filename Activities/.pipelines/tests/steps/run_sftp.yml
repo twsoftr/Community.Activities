@@ -9,34 +9,34 @@ parameters:
     type: string
   - name: DownloadC
     type: string
-    default: "d:/teste/FTPandSFTP/FTPFolder/DownloadRSA"
+    default: "'d:/teste/FTPandSFTP/FTPFolder/DownloadRSA'"
   - name: DownloadP
     type: string
-    default: "d:/teste/FTPandSFTP/FTPFolder/DownloadUserPass"
+    default: "'d:/teste/FTPandSFTP/FTPFolder/DownloadUserPass'"
   - name: LocalPathC
     type: string
-    default: "d:/teste/FTPandSFTP/FTPFolder"
+    default: "'d:/teste/FTPandSFTP/FTPFolder'"
   - name: LocalPathP
     type: string
-    default: "d:/teste/FTPandSFTP/FTPFolder"
+    default: "'d:/teste/FTPandSFTP/FTPFolder'"
   - name: PassP
     type: string
-    default: "password"
+    default: "'password'"
   - name: Port
     type: string
     default: "2022"
   - name: RemotePathC
     type: string
-    default: "/"
+    default: "'/'"
   - name: RemotePathP
     type: string
-    default: "/"
+    default: "'/'"
   - name: UserC
     type: string
-    default: "usercert"
+    default: "'usercert'"
   - name: UserP
     type: string
-    default: "userpass"
+    default: "'userpass'"
 
 
 steps:
@@ -71,7 +71,7 @@ steps:
      inputs:
       targetType: 'inline'
       script: |
-       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\FTPandSFTP\FTPtestsUserPass.xaml" --input "{ 'LocalPath' : $(LocalPathP), 'Remotepath' : $(RemotePathP), 'DownloadUserPass' : $(DownloadP), 'User' : $(UserP), 'Pass' : $(PassP), 'Host' : $env:sftpPublicIP, 'PortPass' : $(Port) }"
+       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\FTPandSFTP\FTPtestsUserPass.xaml" --input "{ 'LocalPath' : ${{ parameters.LocalPathP }}, 'Remotepath' : ${{ parameters.RemotePathP}}, 'DownloadUserPass' : ${{ parameters.DownloadP}}, 'User' : ${{ parameters.UserP}}, 'Pass' : ${{ parameters.PassP}}, 'Host' : $env:sftpPublicIP, 'PortPass' : ${{ parameters.Port}} }"
        Copy-Item "$(uipathTestDirectory)\FTPandSFTP\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_SFTP_UserPASS.xml"
        Remove-Item "$(uipathTestDirectory)\FTPandSFTP\junit*.xml"
 
@@ -89,7 +89,7 @@ steps:
       targetType: 'inline'
       script: |
        $path = "$(uipathTestDirectory)/FTPandSFTP/id_rsa"
-       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\FTPandSFTP\FTPtestsUserRSA.xaml" --input "{ 'LocalPath' : $(LocalPathC), 'Remotepath' : $(RemotePathC), 'DownloadRSA' : $(DownloadC), 'User' : $(UserC), 'CertificatePathPPK': '$path', 'Host' : $env:sftpPublicIP, 'PortRSA' : $(Port) }"
+       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\FTPandSFTP\FTPtestsUserRSA.xaml" --input "{ 'LocalPath' : ${{ parameters.LocalPathC }}, 'Remotepath' : ${{ parameters.RemotePathC}}, 'DownloadRSA' : ${{ parameters.DownloadC}}, 'User' : ${{ parameters.UserC}}, 'CertificatePathPPK': '$path', 'Host' : $env:sftpPublicIP, 'PortRSA' : ${{ parameters.Port }} }"
        Copy-Item "$(uipathTestDirectory)\FTPandSFTP\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_SFTP_Certificate.xml"
        Remove-Item "$(uipathTestDirectory)\FTPandSFTP\junit*.xml"
 
