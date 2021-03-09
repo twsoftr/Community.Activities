@@ -3,6 +3,7 @@ name: Run Integration Tests $(Date:yyyyMMdd)$(Rev:.r)
 variables:
   - group: Secrets
   - group: Cryptography-tests
+  - group: SQLServer-tests
   - name: azureServiceConnectionName
     value: 'AzureDevTest-EA'
   - name: aksResourcePrefix
@@ -121,7 +122,6 @@ stages:
          packagesFolder: $(packagesFolder)
          studioInstallPath: $(studioInstallPath)
          uipathTestDirectory: $(uipathTestDirectory)
-         SQLServer_Connection: $(SQLServer_Connection)
          SQLServer_db_provider: $(SQLServer_db_provider)
   
      - template: steps/clean_aks.yml
