@@ -35,8 +35,6 @@ variables:
     value: 1091
   - name: cryptographyBuildPipeline
     value: 1092
-  - name: SQLServer_db_provider
-    value: "'System.Data.SqlClient'"
 
 # use triggers only on specific branches(no *)
 trigger:
@@ -52,146 +50,146 @@ trigger:
 pr: none
 
 stages:
-#- stage: Run_Java
-#  jobs:
-#  - job: Run_Java_Integration_Tests
-#    pool:
-#      vmImage: 'windows-latest'
-#    steps:
-#    - template: steps/setup_env.yml
-#      parameters:
-#        uipathLicenseCode: $(uipathLicenseCode)
-#        uipathVersion: $(uipathVersion)
-#        studioInstallPath: $(studioInstallPath)
-#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
-#        uipathTestDirectory: $(uipathTestDirectory)
-#
-#    - template: steps/run_java.yml
-#      parameters:
-#        buildPipeline: ${{ variables.javaBuildPipeline }}
-#        packagesFolder: $(packagesFolder)
-#        studioInstallPath: $(studioInstallPath)
-#        uipathTestDirectory: $(uipathTestDirectory)
-#
-#- stage: Run_Python
-#  jobs:
-#  - job: Run_Python_Integration_Tests
-#    pool:
-#      vmImage: 'windows-latest'
-#    steps:
-#    - template: steps/setup_env.yml
-#      parameters:
-#        uipathLicenseCode: $(uipathLicenseCode)
-#        uipathVersion: $(uipathVersion)
-#        studioInstallPath: $(studioInstallPath)
-#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
-#        uipathTestDirectory: $(uipathTestDirectory)
-#
-#    - template: steps/run_python.yml
-#      parameters:
-#        buildPipeline: ${{ variables.pythonBuildPipeline }}
-#        packagesFolder: $(packagesFolder)
-#        studioInstallPath: $(studioInstallPath)
-#        uipathTestDirectory: $(uipathTestDirectory)
+ - stage: Run_Java
+   jobs:
+   - job: Run_Java_Integration_Tests
+     pool:
+       vmImage: 'windows-latest'
+     steps:
+     - template: steps/setup_env.yml
+       parameters:
+         uipathLicenseCode: $(uipathLicenseCode)
+         uipathVersion: $(uipathVersion)
+         studioInstallPath: $(studioInstallPath)
+         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
+     - template: steps/run_java.yml
+       parameters:
+         buildPipeline: ${{ variables.javaBuildPipeline }}
+         packagesFolder: $(packagesFolder)
+         studioInstallPath: $(studioInstallPath)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
+ - stage: Run_Python
+   jobs:
+   - job: Run_Python_Integration_Tests
+     pool:
+       vmImage: 'windows-latest'
+     steps:
+     - template: steps/setup_env.yml
+       parameters:
+         uipathLicenseCode: $(uipathLicenseCode)
+         uipathVersion: $(uipathVersion)
+         studioInstallPath: $(studioInstallPath)
+         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
+     - template: steps/run_python.yml
+       parameters:
+         buildPipeline: ${{ variables.pythonBuildPipeline }}
+         packagesFolder: $(packagesFolder)
+         studioInstallPath: $(studioInstallPath)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
+ 
+ - stage: Run_SQL_Server
+   jobs:
+   - job: Run_SQL_Server_Integration_Tests
+     pool:
+       vmImage: 'windows-latest'
+     steps:
+     - template: steps/setup_env.yml
+       parameters:
+         uipathLicenseCode: $(uipathLicenseCode)
+         uipathVersion: $(uipathVersion)
+         studioInstallPath: $(studioInstallPath)
+         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
+     - template: steps/setup_aks.yml
+       parameters:
+         azureServiceConnectionName: $(azureServiceConnectionName)
+         aksResourcePrefix: $(aksResourcePrefix)
+         sftpContainer: $(sftpContainer)
+         sqlserverContainer: $(sqlserverContainer)
+         deploySqlserverContainer: true
+ 
+     - template: steps/run_sql.yml
+       parameters:
+         buildPipeline: ${{ variables.databaseBuildPipeline }}
+         packagesFolder: $(packagesFolder)
+         studioInstallPath: $(studioInstallPath)
+         uipathTestDirectory: $(uipathTestDirectory)
+         SQLServer_Connection: $(SQLServer_Connection)
+         SQLServer_db_provider: $(SQLServer_db_provider)
+  
+     - template: steps/clean_aks.yml
+       parameters:
+         azureServiceConnectionName: $(azureServiceConnectionName)
+         aksResourcePrefix: $(aksResourcePrefix)
+         sftpContainer: $(sftpContainer)
+         sqlserverContainer: $(sqlserverContainer)
+         deploySqlserverContainer: true
 
 
-#- stage: Run_SQL_Server
-#  jobs:
-#  - job: Run_SQL_Server_Integration_Tests
-#    pool:
-#      vmImage: 'windows-latest'
-#    steps:
-#    - template: steps/setup_env.yml
-#      parameters:
-#        uipathLicenseCode: $(uipathLicenseCode)
-#        uipathVersion: $(uipathVersion)
-#        studioInstallPath: $(studioInstallPath)
-#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
-#        uipathTestDirectory: $(uipathTestDirectory)
-#
-#    - template: steps/setup_aks.yml
-#      parameters:
-#        azureServiceConnectionName: $(azureServiceConnectionName)
-#        aksResourcePrefix: $(aksResourcePrefix)
-#        sftpContainer: $(sftpContainer)
-#        sqlserverContainer: $(sqlserverContainer)
-#        deploySqlserverContainer: true
-#
-#    - template: steps/run_sql.yml
-#      parameters:
-#        buildPipeline: ${{ variables.databaseBuildPipeline }}
-#        packagesFolder: $(packagesFolder)
-#        studioInstallPath: $(studioInstallPath)
-#        uipathTestDirectory: $(uipathTestDirectory)
-#        SQLServer_Connection: $(SQLServer_Connection)
-#        SQLServer_db_provider: $(SQLServer_db_provider)
-# 
-#    - template: steps/clean_aks.yml
-#      parameters:
-#        azureServiceConnectionName: $(azureServiceConnectionName)
-#        aksResourcePrefix: $(aksResourcePrefix)
-#        sftpContainer: $(sftpContainer)
-#        sqlserverContainer: $(sqlserverContainer)
-#        deploySqlserverContainer: true
+ - stage: Run_SFTP_Server
+   jobs:
+   - job: Run_SFTP_Server_Integration_Tests
+     pool:
+       vmImage: 'windows-latest'
+     steps:
+     - template: steps/setup_env.yml
+       parameters:
+         uipathLicenseCode: $(uipathLicenseCode)
+         uipathVersion: $(uipathVersion)
+         studioInstallPath: $(studioInstallPath)
+         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
+     - template: steps/setup_aks.yml
+       parameters:
+         azureServiceConnectionName: $(azureServiceConnectionName)
+         aksResourcePrefix: $(aksResourcePrefix)
+         sftpContainer: $(sftpContainer)
+         sqlserverContainer: $(sqlserverContainer)
+         deploySftpContainer: true
+ 
+     - template: steps/run_sftp.yml
+       parameters:
+         buildPipeline: ${{ variables.sftpBuildPipeline }}
+         packagesFolder: $(packagesFolder)
+         studioInstallPath: $(studioInstallPath)
+         uipathTestDirectory: $(uipathTestDirectory)
+  
+     - template: steps/clean_aks.yml
+       parameters:
+         azureServiceConnectionName: $(azureServiceConnectionName)
+         aksResourcePrefix: $(aksResourcePrefix)
+         sftpContainer: $(sftpContainer)
+         sqlserverContainer: $(sqlserverContainer)
+         deploySftpContainer: true
 
-
-#- stage: Run_SFTP_Server
-#  jobs:
-#  - job: Run_SFTP_Server_Integration_Tests
-#    pool:
-#      vmImage: 'windows-latest'
-#    steps:
-#    - template: steps/setup_env.yml
-#      parameters:
-#        uipathLicenseCode: $(uipathLicenseCode)
-#        uipathVersion: $(uipathVersion)
-#        studioInstallPath: $(studioInstallPath)
-#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
-#        uipathTestDirectory: $(uipathTestDirectory)
-#
-#    - template: steps/setup_aks.yml
-#      parameters:
-#        azureServiceConnectionName: $(azureServiceConnectionName)
-#        aksResourcePrefix: $(aksResourcePrefix)
-#        sftpContainer: $(sftpContainer)
-#        sqlserverContainer: $(sqlserverContainer)
-#        deploySftpContainer: true
-#
-#    - template: steps/run_sftp.yml
-#      parameters:
-#        buildPipeline: ${{ variables.sftpBuildPipeline }}
-#        packagesFolder: $(packagesFolder)
-#        studioInstallPath: $(studioInstallPath)
-#        uipathTestDirectory: $(uipathTestDirectory)
-# 
-#    - template: steps/clean_aks.yml
-#      parameters:
-#        azureServiceConnectionName: $(azureServiceConnectionName)
-#        aksResourcePrefix: $(aksResourcePrefix)
-#        sftpContainer: $(sftpContainer)
-#        sqlserverContainer: $(sqlserverContainer)
-#        deploySftpContainer: true
-
-# - stage: Run_Credentials
-#   jobs:
-#   - job: Run_Credentials_Integration_Tests
-#     pool:
-#       vmImage: 'windows-latest'
-#     steps:
-#     - template: steps/setup_env.yml
-#       parameters:
-#         uipathLicenseCode: $(uipathLicenseCode)
-#         uipathVersion: $(uipathVersion)
-#         studioInstallPath: $(studioInstallPath)
-#         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
-#         uipathTestDirectory: $(uipathTestDirectory)
-# 
-#     - template: steps/run_credentials.yml
-#       parameters:
-#         buildPipeline: ${{ variables.credentialsBuildPipeline }}
-#         packagesFolder: $(packagesFolder)
-#         studioInstallPath: $(studioInstallPath)
-#         uipathTestDirectory: $(uipathTestDirectory)
+ - stage: Run_Credentials
+   jobs:
+   - job: Run_Credentials_Integration_Tests
+     pool:
+       vmImage: 'windows-latest'
+     steps:
+     - template: steps/setup_env.yml
+       parameters:
+         uipathLicenseCode: $(uipathLicenseCode)
+         uipathVersion: $(uipathVersion)
+         studioInstallPath: $(studioInstallPath)
+         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
+     - template: steps/run_credentials.yml
+       parameters:
+         buildPipeline: ${{ variables.credentialsBuildPipeline }}
+         packagesFolder: $(packagesFolder)
+         studioInstallPath: $(studioInstallPath)
+         uipathTestDirectory: $(uipathTestDirectory)
 
 
  - stage: Run_Cryptography

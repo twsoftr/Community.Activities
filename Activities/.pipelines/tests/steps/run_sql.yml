@@ -7,10 +7,9 @@ parameters:
     type: string
   - name: uipathTestDirectory
     type: string
-  - name: SQLServer_Connection
-    type: string
   - name: SQLServer_db_provider
     type: string
+    default: "'System.Data.SqlClient'"
 
 steps:
    - task: DownloadPipelineArtifact@2
