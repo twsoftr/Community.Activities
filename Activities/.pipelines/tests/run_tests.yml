@@ -4,6 +4,7 @@ variables:
   - group: Secrets
   - group: Cryptography-tests
   - group: SQLServer-tests
+  - group: Oracle-tests
   - name: azureServiceConnectionName
     value: 'AzureDevTest-EA'
   - name: aksResourcePrefix
@@ -163,7 +164,16 @@ stages:
          oracleContainer: $(oracleContainer)
          deployOracleContainer: true
  
-
+     - template: steps/run_oracle.yml
+       parameters:
+         buildPipeline: ${{ variables.databaseBuildPipeline }}
+         packagesFolder: $(packagesFolder)
+         studioInstallPath: $(studioInstallPath)
+         uipathTestDirectory: $(uipathTestDirectory)
+         ODBC_db_connStr: $(ODBC_db_connStr)
+         ODBC_db_provider: $(ODBC_db_provider)
+         ODBC_managed_connStr: $(ODBC_managed_connStr)
+         ODBC_managed_provider: $(ODBC_managed_provider)
   
      - template: steps/clean_aks.yml
        parameters:
