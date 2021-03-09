@@ -30,6 +30,8 @@ variables:
     value: 1094
   - name: sftpBuildPipeline
     value: 1095
+  - name: credentialsBuildPipeline
+    value: 1091
   - name: SQLServer_db_provider
     value: "'System.Data.SqlClient'"
 
@@ -130,39 +132,61 @@ stages:
 #        deploySqlserverContainer: true
 
 
-- stage: Run_SFTP_Server
-  jobs:
-  - job: Run_SFTP_Server_Integration_Tests
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - template: steps/setup_env.yml
-      parameters:
-        uipathLicenseCode: $(uipathLicenseCode)
-        uipathVersion: $(uipathVersion)
-        studioInstallPath: $(studioInstallPath)
-        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
-        uipathTestDirectory: $(uipathTestDirectory)
+#- stage: Run_SFTP_Server
+#  jobs:
+#  - job: Run_SFTP_Server_Integration_Tests
+#    pool:
+#      vmImage: 'windows-latest'
+#    steps:
+#    - template: steps/setup_env.yml
+#      parameters:
+#        uipathLicenseCode: $(uipathLicenseCode)
+#        uipathVersion: $(uipathVersion)
+#        studioInstallPath: $(studioInstallPath)
+#        orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+#        uipathTestDirectory: $(uipathTestDirectory)
+#
+#    - template: steps/setup_aks.yml
+#      parameters:
+#        azureServiceConnectionName: $(azureServiceConnectionName)
+#        aksResourcePrefix: $(aksResourcePrefix)
+#        sftpContainer: $(sftpContainer)
+#        sqlserverContainer: $(sqlserverContainer)
+#        deploySftpContainer: true
+#
+#    - template: steps/run_sftp.yml
+#      parameters:
+#        buildPipeline: ${{ variables.sftpBuildPipeline }}
+#        packagesFolder: $(packagesFolder)
+#        studioInstallPath: $(studioInstallPath)
+#        uipathTestDirectory: $(uipathTestDirectory)
+# 
+#    - template: steps/clean_aks.yml
+#      parameters:
+#        azureServiceConnectionName: $(azureServiceConnectionName)
+#        aksResourcePrefix: $(aksResourcePrefix)
+#        sftpContainer: $(sftpContainer)
+#        sqlserverContainer: $(sqlserverContainer)
+#        deploySftpContainer: true
 
-    - template: steps/setup_aks.yml
-      parameters:
-        azureServiceConnectionName: $(azureServiceConnectionName)
-        aksResourcePrefix: $(aksResourcePrefix)
-        sftpContainer: $(sftpContainer)
-        sqlserverContainer: $(sqlserverContainer)
-        deploySftpContainer: true
-
-    - template: steps/run_sftp.yml
-      parameters:
-        buildPipeline: ${{ variables.sftpBuildPipeline }}
-        packagesFolder: $(packagesFolder)
-        studioInstallPath: $(studioInstallPath)
-        uipathTestDirectory: $(uipathTestDirectory)
+ - stage: Run_Credentials
+   jobs:
+   - job: Run_Credentials_Integration_Tests
+     pool:
+       vmImage: 'windows-latest'
+     steps:
+     - template: steps/setup_env.yml
+       parameters:
+         uipathLicenseCode: $(uipathLicenseCode)
+         uipathVersion: $(uipathVersion)
+         studioInstallPath: $(studioInstallPath)
+         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+         uipathTestDirectory: $(uipathTestDirectory)
  
-    - template: steps/clean_aks.yml
-      parameters:
-        azureServiceConnectionName: $(azureServiceConnectionName)
-        aksResourcePrefix: $(aksResourcePrefix)
-        sftpContainer: $(sftpContainer)
-        sqlserverContainer: $(sqlserverContainer)
-        deploySftpContainer: true
+     - template: steps/run_credentials.yml
+       parameters:
+         buildPipeline: ${{ variables.credentialsBuildPipeline }}
+         packagesFolder: $(packagesFolder)
+         studioInstallPath: $(studioInstallPath)
+         uipathTestDirectory: $(uipathTestDirectory)
+ 
