@@ -29,7 +29,7 @@ variables:
   - name: databaseBuildPipeline
     value: 1094
   - name: sftpBuildPipeline
-    value: 1094
+    value: 1095
   - name: SQLServer_db_provider
     value: "'System.Data.SqlClient'"
 
