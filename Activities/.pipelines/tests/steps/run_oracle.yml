@@ -92,8 +92,10 @@ steps:
      inputs:
       targetType: 'inline'
       script: |
-       Write-Host $(ODBC_managed_connStr)
-       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsOracleManaged.xaml" --input "{ 'ODBC_managed_connStr' : $(ODBC_managed_connStr), 'ODBC_managed_provider' : $(ODBC_managed_provider) }"
+       $datas = $(ODBC_managed_connStr)
+       $datas = $datas.Replace('##IP##', '$env:oraclePublicIP')
+       Write-Host $datas
+       $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsOracleManaged.xaml" --input "{ 'ODBC_managed_connStr' : $datas, 'ODBC_managed_provider' : $(ODBC_managed_provider) }"
        Copy-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Database_ORACLE_MANAGED.xml"
        Remove-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml"
 
