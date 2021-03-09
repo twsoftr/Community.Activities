@@ -12,6 +12,8 @@ variables:
     value: 'sftpserver-deployment'
   - name: sqlserverContainer
     value: 'sqlserver-deployment'
+  - name: oracleContainer
+    value: 'oracleserver-deployment'
   - name: uipathLicenseCode
     value: $(LicenseCode)
   - name: uipathVersion
@@ -96,10 +98,51 @@ stages:
 #         uipathTestDirectory: $(uipathTestDirectory)
 # 
 # 
- - stage: Run_SQL_Server
+# - stage: Run_SQL_Server
+#   dependsOn: [] 
+#   jobs:
+#   - job: Run_SQL_Server_Integration_Tests
+#     pool:
+#       vmImage: 'windows-latest'
+#     steps:
+#     - template: steps/setup_env.yml
+#       parameters:
+#         uipathLicenseCode: $(uipathLicenseCode)
+#         uipathVersion: $(uipathVersion)
+#         studioInstallPath: $(studioInstallPath)
+#         orchestratorPSModuleSourceUrl: $(orchestratorPSModuleSourceUrl)
+#         uipathTestDirectory: $(uipathTestDirectory)
+# 
+#     - template: steps/setup_aks.yml
+#       parameters:
+#         azureServiceConnectionName: $(azureServiceConnectionName)
+#         aksResourcePrefix: $(aksResourcePrefix)
+#         sftpContainer: $(sftpContainer)
+#         sqlserverContainer: $(sqlserverContainer)
+#         oracleContainer: $(oracleContainer)
+#         deploySqlserverContainer: true
+# 
+#     - template: steps/run_sql.yml
+#       parameters:
+#         buildPipeline: ${{ variables.databaseBuildPipeline }}
+#         packagesFolder: $(packagesFolder)
+#         studioInstallPath: $(studioInstallPath)
+#         uipathTestDirectory: $(uipathTestDirectory)
+#         SQLServer_db_provider: $(SQLServer_db_provider)
+#  
+#     - template: steps/clean_aks.yml
+#       parameters:
+#         azureServiceConnectionName: $(azureServiceConnectionName)
+#         aksResourcePrefix: $(aksResourcePrefix)
+#         sftpContainer: $(sftpContainer)
+#         oracleContainer: $(oracleContainer)
+#         sqlserverContainer: $(sqlserverContainer)
+#         deploySqlserverContainer: true
+
+ - stage: Run_Oracle_Server
    dependsOn: [] 
    jobs:
-   - job: Run_SQL_Server_Integration_Tests
+   - job: Run_Oracle_Server_Integration_Tests
      pool:
        vmImage: 'windows-latest'
      steps:
@@ -117,15 +160,10 @@ stages:
          aksResourcePrefix: $(aksResourcePrefix)
          sftpContainer: $(sftpContainer)
          sqlserverContainer: $(sqlserverContainer)
-         deploySqlserverContainer: true
+         oracleContainer: $(oracleContainer)
+         deployOracleContainer: true
  
-     - template: steps/run_sql.yml
-       parameters:
-         buildPipeline: ${{ variables.databaseBuildPipeline }}
-         packagesFolder: $(packagesFolder)
-         studioInstallPath: $(studioInstallPath)
-         uipathTestDirectory: $(uipathTestDirectory)
-         SQLServer_db_provider: $(SQLServer_db_provider)
+
   
      - template: steps/clean_aks.yml
        parameters:
@@ -133,8 +171,8 @@ stages:
          aksResourcePrefix: $(aksResourcePrefix)
          sftpContainer: $(sftpContainer)
          sqlserverContainer: $(sqlserverContainer)
-         deploySqlserverContainer: true
-
+         oracleContainer: $(oracleContainer)
+         deployOracleContainer: true
 
 # - stage: Run_SFTP_Server
 #   dependsOn: [] 
@@ -157,6 +195,7 @@ stages:
 #         aksResourcePrefix: $(aksResourcePrefix)
 #         sftpContainer: $(sftpContainer)
 #         sqlserverContainer: $(sqlserverContainer)
+#         oracleContainer: $(oracleContainer)
 #         deploySftpContainer: true
 # 
 #     - template: steps/run_sftp.yml
@@ -172,6 +211,7 @@ stages:
 #         aksResourcePrefix: $(aksResourcePrefix)
 #         sftpContainer: $(sftpContainer)
 #         sqlserverContainer: $(sqlserverContainer)
+#         oracleContainer: $(oracleContainer)
 #         deploySftpContainer: true
 #
 # - stage: Run_Credentials
