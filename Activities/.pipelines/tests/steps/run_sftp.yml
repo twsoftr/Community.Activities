@@ -89,6 +89,8 @@ steps:
       targetType: 'inline'
       script: |
        $path = "$(uipathTestDirectory)/FTPandSFTP/id_rsa"
+       $path = $path.Replace('\','/')
+       write-host "{ 'LocalPath' : ${{ parameters.LocalPathC }}, 'Remotepath' : ${{ parameters.RemotePathC}}, 'DownloadRSA' : ${{ parameters.DownloadC}}, 'User' : ${{ parameters.UserC}}, 'CertificatePathPPK': '$path', 'Host' : '$env:sftpPublicIP', 'PortRSA' : ${{ parameters.Port }} }"
        $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\FTPandSFTP\FTPtestsUserRSA.xaml" --input "{ 'LocalPath' : ${{ parameters.LocalPathC }}, 'Remotepath' : ${{ parameters.RemotePathC}}, 'DownloadRSA' : ${{ parameters.DownloadC}}, 'User' : ${{ parameters.UserC}}, 'CertificatePathPPK': '$path', 'Host' : '$env:sftpPublicIP', 'PortRSA' : ${{ parameters.Port }} }"
        Copy-Item "$(uipathTestDirectory)\FTPandSFTP\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_SFTP_Certificate.xml"
        Remove-Item "$(uipathTestDirectory)\FTPandSFTP\junit*.xml"
