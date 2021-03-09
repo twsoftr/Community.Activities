@@ -45,8 +45,6 @@ steps:
       script: |
        $datas = "'Data Source=" + $env:sqlPublicIP + ";User ID=sa;Password=b2298905Acfa%'"
        Write-Host $datas
-       Write-Host $(SQLServer_Connection)
-       Write-Host $(SQLServer_db_provider)
        $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsSQLS.xaml" --input "{ 'SQLServer_Connection' : $datas, 'SQLServer_db_provider' : $(SQLServer_db_provider) }"
        Copy-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Database_SQLSrv.xml"
        Remove-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml"
