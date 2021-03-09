@@ -28,8 +28,8 @@ variables:
     value: 1099
   - name: databaseBuildPipeline
     value: 1094
-  - name: SQLServer_Connection
-    value: "'Data Source=$($env:sqlPublicIP);User ID=sa;Password=b2298905Acfa%'"
+  - name: sftpBuildPipeline
+    value: 1094
   - name: SQLServer_db_provider
     value: "'System.Data.SqlClient'"
 
@@ -152,12 +152,17 @@ stages:
         sqlserverContainer: $(sqlserverContainer)
         deploySftpContainer: true
 
-
+    - template: steps/run_sftp.yml
+      parameters:
+        buildPipeline: ${{ variables.sftpBuildPipeline }}
+        packagesFolder: $(packagesFolder)
+        studioInstallPath: $(studioInstallPath)
+        uipathTestDirectory: $(uipathTestDirectory)
  
-#   - template: steps/clean_aks.yml
-#     parameters:
-#       azureServiceConnectionName: $(azureServiceConnectionName)
-#       aksResourcePrefix: $(aksResourcePrefix)
-#       sftpContainer: $(sftpContainer)
-#       sqlserverContainer: $(sqlserverContainer)
-#       deploySftpContainer: true
+    - template: steps/clean_aks.yml
+      parameters:
+        azureServiceConnectionName: $(azureServiceConnectionName)
+        aksResourcePrefix: $(aksResourcePrefix)
+        sftpContainer: $(sftpContainer)
+        sqlserverContainer: $(sqlserverContainer)
+        deploySftpContainer: true
