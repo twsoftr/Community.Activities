@@ -43,6 +43,7 @@ steps:
      inputs:
       targetType: 'inline'
       script: |
+       Start-Sleep -s 300
        $datas = "'Data Source=" + $env:sqlPublicIP + ";User ID=sa;Password=b2298905Acfa%'"
        Write-Host $datas
        $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsSQLS.xaml" --input "{ 'SQLServer_Connection' : $datas, 'SQLServer_db_provider' : $(SQLServer_db_provider) }"
