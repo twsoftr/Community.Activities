@@ -92,6 +92,7 @@ steps:
      inputs:
       targetType: 'inline'
       script: |
+       Start-Sleep -s 400
        $datas = $(ODBC_managed_connStr)
        $datas = $datas.Replace('##IP##', $env:oraclePublicIP)
        $datas = "'" + $datas + "'"
