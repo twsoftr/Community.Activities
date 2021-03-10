@@ -79,10 +79,11 @@ steps:
         Add-OdbcDsn -Name "TestDB" -DriverName "Oracle in oracle" -Platform "32-bit" -DsnType "User" -SetPropertyValue @("SERVER=TestDB")
 
    - task: PowerShell@2
-     displayName: Run ODBC with Oracle Tests VB
+     displayName: Run ODBC with Oracle Tests VB (with wait time)
      inputs:
       targetType: 'inline'
       script: |
+       Start-Sleep -s 1500
        $(studioInstallPath)\uirobot.exe execute --file "$(uipathTestDirectory)\DatabaseTests\DatabaseTestsODBC.xaml" --input "{ 'ODBC_db_connStr' : ${{ parameters.ODBC_db_connStr}}, 'ODBC_db_provider' : ${{ parameters.ODBC_db_provider}} }"
        Copy-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml" -Destination "$(Build.ArtifactStagingDirectory)\junit_Database_ODBC_ORACLE.xml"
        Remove-Item "$(uipathTestDirectory)\DatabaseTests\junit*.xml"
@@ -92,7 +93,6 @@ steps:
      inputs:
       targetType: 'inline'
       script: |
-       Start-Sleep -s 600
        $datas = $(ODBC_managed_connStr)
        $datas = $datas.Replace('##IP##', $env:oraclePublicIP)
        $datas = "'" + $datas + "'"
