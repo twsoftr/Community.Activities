@@ -56,6 +56,7 @@ steps:
        mkdir d:\ora_temp
        Copy-Item "$(Build.SourcesDirectory)\Activities\Tests\Setup\instantclient_19_8.zip" -Destination "d:\ora_temp"
        Expand-Archive -LiteralPath 'd:\ora_temp\instantclient_19_8.zip' -DestinationPath 'd:\oracle'
+       ((Get-Content -path $(Build.SourcesDirectory)\Activities\Tests\Setup\tnsnames.ora -Raw) -replace '##IP##', $env:oraclePublicIP) | Set-Content -Path $(Build.SourcesDirectory)\Activities\Tests\Setup\tnsnames.ora
        Copy-Item "$(Build.SourcesDirectory)\Activities\Tests\Setup\tnsnames.ora" -Destination "d:\oracle\network\admin\tnsnames.ora" -Force
 
    - task: PowerShell@2
