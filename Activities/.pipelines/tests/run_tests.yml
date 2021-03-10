@@ -131,14 +131,14 @@ stages:
          uipathTestDirectory: $(uipathTestDirectory)
          SQLServer_db_provider: $(SQLServer_db_provider)
   
-     - template: steps/clean_aks.yml
-       parameters:
-         azureServiceConnectionName: $(azureServiceConnectionName)
-         aksResourcePrefix: $(aksResourcePrefix)
-         sftpContainer: $(sftpContainer)
-         oracleContainer: $(oracleContainer)
-         sqlserverContainer: $(sqlserverContainer)
-         deploySqlserverContainer: true
+#     - template: steps/clean_aks.yml
+#       parameters:
+#         azureServiceConnectionName: $(azureServiceConnectionName)
+#         aksResourcePrefix: $(aksResourcePrefix)
+#         sftpContainer: $(sftpContainer)
+#         oracleContainer: $(oracleContainer)
+#         sqlserverContainer: $(sqlserverContainer)
+#         deploySqlserverContainer: true
 
  - stage: Run_Oracle_Server
    dependsOn: [] 
@@ -175,14 +175,14 @@ stages:
          ODBC_managed_connStr: $(ODBC_managed_connStr)
          ODBC_managed_provider: $(ODBC_managed_provider)
   
-     - template: steps/clean_aks.yml
-       parameters:
-         azureServiceConnectionName: $(azureServiceConnectionName)
-         aksResourcePrefix: $(aksResourcePrefix)
-         sftpContainer: $(sftpContainer)
-         sqlserverContainer: $(sqlserverContainer)
-         oracleContainer: $(oracleContainer)
-         deployOracleContainer: true
+#     - template: steps/clean_aks.yml
+#       parameters:
+#         azureServiceConnectionName: $(azureServiceConnectionName)
+#         aksResourcePrefix: $(aksResourcePrefix)
+#         sftpContainer: $(sftpContainer)
+#         sqlserverContainer: $(sqlserverContainer)
+#         oracleContainer: $(oracleContainer)
+#         deployOracleContainer: true
 
  - stage: Run_SFTP_Server
    dependsOn: [] 
