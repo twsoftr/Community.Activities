@@ -51,7 +51,7 @@ trigger:
       - Activities/*
 
 schedules:
-- cron: '0 0 1 * * ?' # cron syntax defining a schedule
+- cron: "0 0 1 * * ?" # cron syntax defining a schedule
   branches:
      include:
        - masters
