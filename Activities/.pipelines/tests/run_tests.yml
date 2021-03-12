@@ -50,6 +50,10 @@ trigger:
     include:
       - Activities/*
 
+schedules:
+- cron: 0 0/5 * 1/1 * ? * # cron syntax defining a schedule
+  always: true
+
 # don't user PR triggers 
 pr: none
 
