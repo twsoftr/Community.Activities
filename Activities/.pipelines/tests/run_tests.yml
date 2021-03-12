@@ -52,6 +52,10 @@ trigger:
 
 schedules:
 - cron: '*/5 * * * *' # cron syntax defining a schedule
+  branches:
+     include:
+       - masters
+       - develop
   always: true
 
 # don't user PR triggers 
