@@ -51,12 +51,12 @@ trigger:
       - Activities/*
 
 schedules:
-- cron: '0 0 1 ? * MON,TUE,WED,THU,FRI *' # cron syntax defining a schedule
+- cron: '0 0 1 ? * * *' # cron syntax defining a schedule
   branches:
      include:
        - masters
        - develop
-  always: true
+  always: false
 
 # don't user PR triggers 
 pr: none
